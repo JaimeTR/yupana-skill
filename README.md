@@ -1,29 +1,50 @@
-# Yupana Skill
+<h1 align="center">Yupana</h1>
+<p align="center"><em>De la pregunta al informe, con datos oficiales del Perú y cada cifra citada.</em></p>
+<p align="center">Un skill abierto y gratuito para economistas, estudiantes y analistas.<br>Creado por <strong>Jaime TR</strong> · Licencia MIT</p>
 
-Skill gratuito y abierto para consultar datos económicos del Perú y redactar informes en español con **cada cifra citada**.
+---
 
-> Estado: en construcción (v0.0.x). Funciona el cliente de la API pública del BCRP, los cálculos de variaciones y la plantilla de informe. Falta confirmar el esquema real de la API y añadir el catálogo de series.
+> **Estado:** v0.1.0. Conocimiento, plantillas, cálculos y cliente del BCRP listos. Pendiente: confirmar el esquema real de la API y publicar el catálogo verificado de series. Ver [CHANGELOG](CHANGELOG.md).
 
-## Qué hace
-- Descarga series del BCRP (API pública de BCRPData) con su cita: fuente, URL y fecha.
-- Calcula variaciones mensual, interanual, acumulada y medias móviles.
-- Guía la redacción de un informe de coyuntura sin cifras sin fuente.
+## ¿Qué problema resuelve?
+Hacer un informe económico del Perú consume horas en buscar datos, limpiarlos, calcular variaciones, darle formato y citar. Los asistentes de IA genéricos, además, inventan cifras. Yupana obliga a que **cada número tenga fuente, código, URL y fecha de consulta**.
 
-## Instalación (Claude Code)
+## ¿Qué incluye?
+| Componente | Para qué |
+|---|---|
+| `scripts/bcrp.mjs` | Descarga series de la API pública del BCRP con su cita |
+| `scripts/lib/calc.mjs` | Variaciones mensual, interanual, acumulada y medias móviles (sin interpolar) |
+| `references/` | Guías: indicadores, fuentes peruanas, metodología, redacción, econometría, citas, glosario |
+| `assets/` | Plantillas: informe de coyuntura, nota breve, capítulo de datos para tesis |
+| `SKILL.md` | Reglas duras y enrutamiento para el agente |
+
+## Instalación rápida (Claude Code)
 ```bash
 git clone https://github.com/JaimeTR/yupana-skill
-cp -r yupana-skill/skills/yupana-peru ~/.claude/skills/
+mkdir -p ~/.claude/skills && cp -r yupana-skill/skills/yupana-peru ~/.claude/skills/
 ```
-Requiere Node 18 o superior. Luego pide, por ejemplo: *"Haz un informe de coyuntura con la inflación y el tipo de cambio de los últimos 12 meses"*.
+Más opciones en [docs/INSTALACION.md](docs/INSTALACION.md). Guía en [docs/USO.md](docs/USO.md).
+
+## Principios
+1. **Ninguna cifra sin fuente.**
+2. **Si la consulta falla, se informa; nunca se inventan datos.**
+3. **Abierto y gratuito (MIT).** Los datos pertenecen a sus fuentes.
 
 ## Desarrollo
 ```bash
-npm test          # pruebas unitarias
+npm test                                           # pruebas unitarias
 BCRP_LIVE=1 BCRP_CODE=<código> npm run test:live   # prueba contra la API real
 ```
+Ver [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Principios
-1. Ninguna cifra sin fuente. 2. Si falla la consulta, se informa; nunca se inventan datos. 3. Abierto y gratuito (MIT).
+## Hoja de ruta
+- [x] v0.1: conocimiento, plantillas, cálculos, cliente BCRP
+- [ ] v0.2: catálogo verificado de series del BCRP y respaldo con Banco Mundial
+- [ ] v0.3: verificador automático de cifras
+- [ ] v1.0: skill estable + web app (ver proyecto `yupana-web`)
+
+## Aviso
+Herramienta de apoyo. No sustituye el criterio profesional ni constituye asesoría financiera o legal.
 
 ## Licencia
-MIT. Los datos pertenecen a sus fuentes (BCRP) y se rigen por sus condiciones de uso.
+[MIT](LICENSE) © 2026 Jaime TR

@@ -1,9 +1,13 @@
 ---
 name: yupana-peru
+version: 0.1.0
+author: Jaime TR
+license: MIT
 description: Consulta series económicas del Perú (BCRP y otras fuentes públicas gratuitas), calcula variaciones y redacta informes de coyuntura en español con cada cifra citada. Úsalo cuando pidan datos, gráficos o análisis de inflación, PBI, tipo de cambio, tasa de referencia, comercio exterior u otras variables macroeconómicas del Perú.
 ---
 
 # Yupana Perú
+*Creado por Jaime TR · licencia MIT · https://github.com/JaimeTR/yupana-skill*
 
 Asistente para economistas y estudiantes: de la pregunta al informe, con datos oficiales y **cada cifra citada**.
 
@@ -33,10 +37,32 @@ Formatos de periodo soportados: mensual (`Ene.2024`), trimestral (`T1.2024`), an
 4. Redacta con la plantilla `assets/informe-coyuntura.md`: resumen ejecutivo, secciones por tema, tabla de fuentes.
 5. Revisa que **cada cifra del texto** coincida con la salida de los scripts antes de entregar.
 
+## Qué referencia leer según la tarea
+Carga solo lo que necesites (están en `references/`):
+
+| Si el usuario pide… | Lee |
+|---|---|
+| Qué significa un indicador, cómo interpretarlo, qué cuidados tiene | `guia-indicadores.md` |
+| Dónde encontrar un dato, qué institución lo publica, calendario | `instituciones-fuentes.md` |
+| Cómo analizar, comparar, graficar, evitar errores | `metodologia-analisis.md` |
+| Redactar un informe, una nota o un capítulo de tesis | `redaccion-economica.md` y `assets/` |
+| Regresiones, series de tiempo, interpretación de coeficientes | `econometria-basica.md` |
+| Cómo citar y verificar cifras | `citas-y-trazabilidad.md` |
+| Un término técnico | `glosario.md` |
+| Ideas de qué pedir | `ejemplos-de-uso.md` |
+
+## Plantillas (`assets/`)
+- `informe-coyuntura.md`: informe mensual.
+- `nota-breve.md`: una variable, una página.
+- `capitulo-datos-tesis.md`: capítulo de datos para tesis.
+
+## Perfil del usuario
+Si el usuario es **estudiante**, explica los conceptos y el método con más detalle y sugiere cómo citar. Si es **profesional**, ve directo al resultado, con el informe listo para revisar. En ambos casos, mismas reglas duras.
+
 ## Estilo de redacción
 Español claro y directo. Primero el hallazgo, luego el dato que lo respalda. Unidades y periodo siempre explícitos ("3,2 % interanual en mayo de 2025"). Sin adjetivos que la cifra no justifique.
 
-## Límites actuales (v0.0.x)
+## Límites actuales (v0.1.x)
 - Solo fuente BCRP vía API pública. Más fuentes públicas gratuitas se añadirán después.
 - El esquema de respuesta del BCRP aún se está confirmando con pruebas en vivo.
 - Herramienta de apoyo: no sustituye el criterio profesional ni constituye asesoría financiera.

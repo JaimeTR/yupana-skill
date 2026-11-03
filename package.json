@@ -1,13 +1,20 @@
 {
   "name": "yupana-skill",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "description": "Skill gratuito para consultar datos económicos del Perú con cada cifra citada",
   "license": "MIT",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "test": "node --test tests/unit/*.test.mjs",
     "test:live": "BCRP_LIVE=1 node --test tests/live/*.test.mjs"
+  },
+  "author": "Jaime TR",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JaimeTR/yupana-skill.git"
   }
 }
