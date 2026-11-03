@@ -20,6 +20,14 @@ test("buildUrl rechaza códigos peligrosos o vacíos", () => {
   assert.throws(() => buildUrl(["../x"], "2024-1", "2024-2"), BcrpError);
   assert.throws(() => buildUrl(["A1"], "", "2024-2"), BcrpError);
 });
+test("buildUrl rechaza fechas e idioma que intenten alterar la URL", () => {
+  for (const bad of ["2024-1/../x", "2024-1?a=b", "2024-1#x", "../2024", "abc", "2024-1-2-3", "20245"]) {
+    assert.throws(() => buildUrl(["A1"], bad, "2025-1"), BcrpError, bad);
+    assert.throws(() => buildUrl(["A1"], "2024-1", bad), BcrpError, bad);
+  }
+  assert.throws(() => buildUrl(["A1"], "2024-1", "2025-1", "esp/../x"), BcrpError);
+  assert.match(buildUrl(["A1"], "2024", "2025-12"), /2024\/2025-12/);
+});
 test("parseResponse: columnas por serie, n.d. -> null, separador de miles", () => {
   const r = parseResponse(sintetico, { url: "u", retrievedAt: "2026-01-01T00:00:00Z" });
   assert.equal(r.series.length, 2);

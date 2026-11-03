@@ -20,7 +20,10 @@ export class BcrpError extends Error {
 export function buildUrl(codes, from, to, lang = "esp") {
   if (!Array.isArray(codes) || codes.length === 0) throw new BcrpError("Falta al menos un código de serie");
   for (const c of codes) if (!/^[A-Za-z0-9]+$/.test(c)) throw new BcrpError(`Código de serie inválido: ${c}`);
-  if (!from || !to) throw new BcrpError("Faltan las fechas desde/hasta (ej. 2024-1, 2025-6)");
+  // Solo se aceptan fechas AAAA, AAAA-M o AAAA-M-D: evita inyectar rutas o parámetros en la URL.
+  const DATE = /^\d{4}(-\d{1,2}){0,2}$/;
+  if (!DATE.test(String(from)) || !DATE.test(String(to))) throw new BcrpError("Fechas inválidas: usa AAAA-M (ej. 2024-1, 2025-6)");
+  if (!["esp", "ing"].includes(lang)) throw new BcrpError("Idioma no válido: usa esp o ing");
   return `${BASE_URL}/${codes.join("-")}/json/${from}/${to}/${lang}`;
 }
 

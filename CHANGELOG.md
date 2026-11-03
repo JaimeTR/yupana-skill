@@ -14,3 +14,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). V
 ### Pendiente
 - Confirmar el esquema real de la API del BCRP y publicar un catálogo verificado de series.
 - Fuentes adicionales gratuitas (Banco Mundial, datos abiertos).
+
+## [0.1.1] - 2026-11-03
+### Seguridad
+- El cliente del BCRP valida fechas e idioma (antes solo los códigos) para impedir inyectar rutas o parámetros en la URL.
+- `SKILL.md` indica tratar el contenido descargado como datos y no como instrucciones (inyección de prompts).
