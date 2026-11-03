@@ -1,9 +1,9 @@
 // Cliente de la API pública de BCRPData (Banco Central de Reserva del Perú).
 // Patrón de URL (guía oficial): /api/{códigos}/{formato}/{desde}/{hasta}/{idioma}
 //
-// ESTADO: la forma de la URL está CONFIRMADA con la guía oficial. El esquema JSON de la
-// respuesta ({config:{title,series:[{name}]}, periods:[{name, values:[...]}]}) aún debe
-// confirmarse con una respuesta real (ver tests/fixtures y `npm run test:live`).
+// ESTADO: URL confirmada con la guía oficial y esquema JSON confirmado con una respuesta real
+// (tests/fixtures): {config:{title, series:[{name, dec}]}, periods:[{name, values:["106.62...", ...]}]}.
+// Los valores llegan como texto con muchos decimales; "dec" indica los decimales con que el BCRP los publica.
 
 export const BASE_URL = "https://estadisticas.bcrp.gob.pe/estadisticas/series/api";
 
@@ -43,7 +43,7 @@ export function parseResponse(raw, { url, retrievedAt } = {}) {
   if (!raw || typeof raw !== "object" || !Array.isArray(raw.periods) || !raw.config) {
     throw new BcrpError("Respuesta del BCRP con formato inesperado", { url });
   }
-  const series = (raw.config.series ?? []).map((s) => ({ name: s.name }));
+  const series = (raw.config.series ?? []).map((s) => ({ name: s.name, decimals: Number.isInteger(Number(s.dec)) ? Number(s.dec) : null }));
   const toNum = (v) => {
     if (v === null || v === undefined) return null;
     const t = String(v).trim();

@@ -15,6 +15,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). V
 - Confirmar el esquema real de la API del BCRP y publicar un catálogo verificado de series.
 - Fuentes adicionales gratuitas (Banco Mundial, datos abiertos).
 
+## [0.2.1] - 2026-11-03
+### Confirmado con datos reales
+- El esquema JSON de la API del BCRP quedó confirmado con una respuesta real (series `PN01288PM` y `PN01289PM`, Ene.2013 a Sep.2016), guardada como prueba en `tests/fixtures/`.
+- Las 4 pruebas con datos reales usan valores esperados calculados aparte con Python (variación mensual, interanual, acumulada, media móvil) y verifican el verificador de cifras con redondeo a los decimales de la serie.
+### Añadido
+- Cada serie expone `decimals` (campo `dec` del BCRP).
+- `references/series-bcrp.md`: registro de series verificadas, con estado (vigente/descontinuada).
+- Aviso en `SKILL.md` sobre series descontinuadas y años base (el IPC vigente es Dic.2021 = 100).
+
 ## [0.2.0] - 2026-11-03
 ### Añadido
 - `scripts/verify.mjs`: verificador de cifras. Extrae los números de un informe (ignora años, fechas, códigos, URLs, referencias y la sección Fuentes) y los contrasta con la evidencia descargada, respetando el redondeo escrito y los formatos numéricos en español. Falla con código 1 si hay cifras sin respaldo.

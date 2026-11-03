@@ -4,7 +4,7 @@
 
 ---
 
-> **Estado:** v0.2.0. Conocimiento, plantillas, cálculos y cliente del BCRP listos. La API del BCRP es pública y gratuita (sin clave) y la forma de la URL está confirmada con su guía oficial. Pendiente: confirmar el esquema JSON de la respuesta con una respuesta real y publicar el catálogo verificado de series. Ver [CHANGELOG](CHANGELOG.md).
+> **Estado:** v0.2.1. Conocimiento, plantillas, cálculos y cliente del BCRP listos. La API del BCRP es pública y gratuita (sin clave); URL y formato de respuesta están confirmados con la guía oficial y con una respuesta real. Pendiente: ampliar el catálogo de series vigentes verificadas (ver `references/series-bcrp.md`). Ver [CHANGELOG](CHANGELOG.md).
 
 ## ¿Qué problema resuelve?
 Hacer un informe económico del Perú consume horas en buscar datos, limpiarlos, calcular variaciones, darle formato y citar. Los asistentes de IA genéricos, además, inventan cifras. Yupana obliga a que **cada número tenga fuente, código, URL y fecha de consulta**.

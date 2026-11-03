@@ -1,6 +1,6 @@
 ---
 name: yupana-peru
-version: 0.2.0
+version: 0.2.1
 author: Jaime TR
 license: MIT
 description: Consulta series económicas del Perú (BCRP y otras fuentes públicas gratuitas), calcula variaciones y redacta informes de coyuntura en español con cada cifra citada. Úsalo cuando pidan datos, gráficos o análisis de inflación, PBI, tipo de cambio, tasa de referencia, comercio exterior u otras variables macroeconómicas del Perú.
@@ -30,6 +30,10 @@ node scripts/bcrp.mjs get <CÓDIGO[,CÓDIGO...]> [desde [hasta]] [--calc prev|yo
 - `--calc`: `prev` variación sobre el periodo anterior, `yoy` interanual, `ytd` acumulada en el año, `ma:N` media móvil de N periodos.
 - Los códigos de serie se buscan en https://estadisticas.bcrp.gob.pe/estadisticas/series/ (sección **Metadatos** o al consultar una serie). Pide al usuario el código si no lo conoces; **no adivines códigos**.
 - La salida es JSON con `series[].points`, `calc` (si se pidió) y `source` (cita).
+
+Cada serie trae `decimals`: los decimales con que el BCRP publica el dato. **Redondea a ese número al escribir** (el valor completo trae muchos más). Los nombres de periodo mensuales usan abreviaturas como `Ene.2013`, `Sep.2013`.
+
+**Series descontinuadas y años base:** muchas series tienen versiones con distinto año base y algunas figuran como "(descontinuada)" en su título. Antes de usar una serie en un informe, confirma que está vigente y di el año base. Para el IPC de Lima Metropolitana, la serie vigente es la de índice **Dic.2021 = 100**; la de 2009 = 100 está descontinuada.
 
 Formatos de periodo soportados: mensual (`Ene.2024`), trimestral (`T1.2024`), anual (`2024`). Otros devuelven `null` en los cálculos de variación; avísalo.
 
@@ -71,6 +75,6 @@ Español claro y directo. Primero el hallazgo, luego el dato que lo respalda. Un
 
 ## Límites actuales (v0.1.x)
 - Solo fuente BCRP vía API pública. Más fuentes públicas gratuitas se añadirán después.
-- La URL de la API está confirmada con la guía oficial; el esquema JSON de la respuesta se está confirmando con una respuesta real.
+- URL y formato de respuesta confirmados con la guía oficial y una respuesta real del BCRP.
 - Revisa las Condiciones de Uso de BCRPData antes de redistribuir datos.
 - Herramienta de apoyo: no sustituye el criterio profesional ni constituye asesoría financiera.
