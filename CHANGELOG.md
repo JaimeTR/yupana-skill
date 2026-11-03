@@ -15,6 +15,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). V
 - Confirmar el esquema real de la API del BCRP y publicar un catálogo verificado de series.
 - Fuentes adicionales gratuitas (Banco Mundial, datos abiertos).
 
+## [0.2.0] - 2026-11-03
+### Añadido
+- `scripts/verify.mjs`: verificador de cifras. Extrae los números de un informe (ignora años, fechas, códigos, URLs, referencias y la sección Fuentes) y los contrasta con la evidencia descargada, respetando el redondeo escrito y los formatos numéricos en español. Falla con código 1 si hay cifras sin respaldo.
+- 8 pruebas del verificador (32 en total).
+
 ## [0.1.2] - 2026-11-03
 ### Cambiado
 - El cliente sigue la guía oficial de la API de BCRPData: de 1 a 10 series por consulta, periodos opcionales (sin periodos = datos más recientes; un periodo = consulta de esa fecha) y el idioma solo junto a ambos periodos.

@@ -1,6 +1,6 @@
 ---
 name: yupana-peru
-version: 0.1.2
+version: 0.2.0
 author: Jaime TR
 license: MIT
 description: Consulta series económicas del Perú (BCRP y otras fuentes públicas gratuitas), calcula variaciones y redacta informes de coyuntura en español con cada cifra citada. Úsalo cuando pidan datos, gráficos o análisis de inflación, PBI, tipo de cambio, tasa de referencia, comercio exterior u otras variables macroeconómicas del Perú.
@@ -38,7 +38,11 @@ Formatos de periodo soportados: mensual (`Ene.2024`), trimestral (`T1.2024`), an
 2. Consulta cada serie con el script y guarda la salida.
 3. Calcula las variaciones necesarias con `--calc`.
 4. Redacta con la plantilla `assets/informe-coyuntura.md`: resumen ejecutivo, secciones por tema, tabla de fuentes.
-5. Revisa que **cada cifra del texto** coincida con la salida de los scripts antes de entregar.
+5. Guarda cada salida de `bcrp.mjs` en un archivo JSON y **verifica el informe antes de entregarlo**:
+   ```bash
+   node scripts/verify.mjs informe.md serie1.json serie2.json
+   ```
+   Cada cifra del texto debe aparecer como verificada (coincide, con el redondeo escrito, con un valor de la evidencia). Si hay cifras `??`, corrígelas o elimínalas. Las constantes citadas (por ejemplo el rango meta de inflación) se declaran en un archivo `{"constants":[{"value":1,"source":"BCRP, meta de inflación"}]}` que se pasa como evidencia adicional. El verificador no entiende unidades ni escalas: es un control, no sustituye tu revisión.
 
 ## Qué referencia leer según la tarea
 Carga solo lo que necesites (están en `references/`):
