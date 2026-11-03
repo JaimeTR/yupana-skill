@@ -1,6 +1,6 @@
 ---
 name: yupana-peru
-version: 0.1.1
+version: 0.1.2
 author: Jaime TR
 license: MIT
 description: Consulta series económicas del Perú (BCRP y otras fuentes públicas gratuitas), calcula variaciones y redacta informes de coyuntura en español con cada cifra citada. Úsalo cuando pidan datos, gráficos o análisis de inflación, PBI, tipo de cambio, tasa de referencia, comercio exterior u otras variables macroeconómicas del Perú.
@@ -20,13 +20,15 @@ Asistente para economistas y estudiantes: de la pregunta al informe, con datos o
 6. **Distingue dato de interpretación.** Marca como opinión o hipótesis lo que no sale directamente de los datos.
 
 ## Cómo consultar datos del BCRP
-Requiere Node 18+ y acceso a internet. Desde la carpeta del skill:
+La API pública de BCRPData **no requiere clave, cuenta ni suscripción**. Requiere Node 18+ y acceso a internet. Desde la carpeta del skill:
 
 ```bash
-node scripts/bcrp.mjs get <CÓDIGO[,CÓDIGO...]> <desde> <hasta> [--calc prev|yoy|ytd|ma:N]
+node scripts/bcrp.mjs get <CÓDIGO[,CÓDIGO...]> [desde [hasta]] [--calc prev|yoy|ytd|ma:N]
 ```
-- Fechas `AAAA-M` (ej. `2024-1`). `--calc`: `prev` variación sobre el periodo anterior, `yoy` interanual, `ytd` acumulada en el año, `ma:N` media móvil de N periodos.
-- Los códigos de serie se buscan en https://estadisticas.bcrp.gob.pe/estadisticas/series/ (cada serie muestra su código). Pide al usuario el código si no lo conoces; **no adivines códigos**.
+- De 1 a 10 códigos separados por coma; **deben ser de la misma frecuencia** (si no, el BCRP solo devuelve los de la primera serie).
+- Fechas `AAAA-M` (ej. `2024-1`). Sin fechas: los datos más recientes. Con una sola fecha: consulta de ese periodo.
+- `--calc`: `prev` variación sobre el periodo anterior, `yoy` interanual, `ytd` acumulada en el año, `ma:N` media móvil de N periodos.
+- Los códigos de serie se buscan en https://estadisticas.bcrp.gob.pe/estadisticas/series/ (sección **Metadatos** o al consultar una serie). Pide al usuario el código si no lo conoces; **no adivines códigos**.
 - La salida es JSON con `series[].points`, `calc` (si se pidió) y `source` (cita).
 
 Formatos de periodo soportados: mensual (`Ene.2024`), trimestral (`T1.2024`), anual (`2024`). Otros devuelven `null` en los cálculos de variación; avísalo.
@@ -65,5 +67,6 @@ Español claro y directo. Primero el hallazgo, luego el dato que lo respalda. Un
 
 ## Límites actuales (v0.1.x)
 - Solo fuente BCRP vía API pública. Más fuentes públicas gratuitas se añadirán después.
-- El esquema de respuesta del BCRP aún se está confirmando con pruebas en vivo.
+- La URL de la API está confirmada con la guía oficial; el esquema JSON de la respuesta se está confirmando con una respuesta real.
+- Revisa las Condiciones de Uso de BCRPData antes de redistribuir datos.
 - Herramienta de apoyo: no sustituye el criterio profesional ni constituye asesoría financiera.

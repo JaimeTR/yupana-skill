@@ -1,6 +1,6 @@
 {
   "name": "yupana-skill",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "description": "Skill gratuito para consultar datos económicos del Perú con cada cifra citada",

@@ -11,6 +11,25 @@ const sintetico = {
   ],
 };
 
+// Ejemplos tomados de la guía oficial "API para Desarrolladores" de BCRPData (formato json).
+test("buildUrl reproduce los ejemplos oficiales", () => {
+  const B = "https://estadisticas.bcrp.gob.pe/estadisticas/series/api";
+  assert.equal(buildUrl(["PN01288PM"], "2010-1", "2016-9"), `${B}/PN01288PM/json/2010-1/2016-9/esp`);
+  assert.equal(buildUrl(["PN01288PM", "PN01289PM"], "2013-1", "2016-9"), `${B}/PN01288PM-PN01289PM/json/2013-1/2016-9/esp`);
+  assert.equal(buildUrl(["PN01288PM"], "2010-1", "2016-9", "ing"), `${B}/PN01288PM/json/2010-1/2016-9/ing`);
+});
+test("buildUrl: sin fechas (más recientes) o con una sola fecha", () => {
+  const B = "https://estadisticas.bcrp.gob.pe/estadisticas/series/api";
+  assert.equal(buildUrl(["PN01270PM"]), `${B}/PN01270PM/json`);
+  assert.equal(buildUrl(["PN01288PM"], "2016-9"), `${B}/PN01288PM/json/2016-9`);
+});
+test("buildUrl: máximo 10 series, periodo final exige inicial, idioma exige ambos periodos", () => {
+  const diez = Array.from({ length: 10 }, (_, i) => `PN0000${i}PM`);
+  assert.ok(buildUrl(diez));
+  assert.throws(() => buildUrl([...diez, "PN99999PM"]), /como máximo 10/);
+  assert.throws(() => buildUrl(["A1"], undefined, "2016-9"), BcrpError);
+  assert.throws(() => buildUrl(["A1"], "2016-9", undefined, "ing"), BcrpError);
+});
 test("buildUrl: una y varias series", () => {
   assert.match(buildUrl(["PN00001MM"], "2024-1", "2024-6"), /\/api\/PN00001MM\/json\/2024-1\/2024-6\/esp$/);
   assert.match(buildUrl(["A1", "B2"], "2024-1", "2024-6", "ing"), /\/api\/A1-B2\/json\/2024-1\/2024-6\/ing$/);
@@ -18,7 +37,7 @@ test("buildUrl: una y varias series", () => {
 test("buildUrl rechaza códigos peligrosos o vacíos", () => {
   assert.throws(() => buildUrl([], "2024-1", "2024-2"), BcrpError);
   assert.throws(() => buildUrl(["../x"], "2024-1", "2024-2"), BcrpError);
-  assert.throws(() => buildUrl(["A1"], "", "2024-2"), BcrpError);
+  assert.throws(() => buildUrl(["A1"], "abc", "2024-2"), BcrpError);
 });
 test("buildUrl rechaza fechas e idioma que intenten alterar la URL", () => {
   for (const bad of ["2024-1/../x", "2024-1?a=b", "2024-1#x", "../2024", "abc", "2024-1-2-3", "20245"]) {

@@ -1,10 +1,9 @@
 // Cliente de la API pública de BCRPData (Banco Central de Reserva del Perú).
-// Patrón de URL (guía oficial bcrpdataapi.pdf): /api/{códigos}/{formato}/{desde}/{hasta}/{idioma}
-// Varias series se separan con "-". Fechas: "2024-1" (mensual).
+// Patrón de URL (guía oficial): /api/{códigos}/{formato}/{desde}/{hasta}/{idioma}
 //
-// ESTADO: el esquema JSON de respuesta está implementado según lo conocido
-// ({config:{title,series:[{name}]}, periods:[{name, values:[...]}]}) y debe
-// confirmarse con una respuesta real: ejecutar `npm run test:live`.
+// ESTADO: la forma de la URL está CONFIRMADA con la guía oficial. El esquema JSON de la
+// respuesta ({config:{title,series:[{name}]}, periods:[{name, values:[...]}]}) aún debe
+// confirmarse con una respuesta real (ver tests/fixtures y `npm run test:live`).
 
 export const BASE_URL = "https://estadisticas.bcrp.gob.pe/estadisticas/series/api";
 
@@ -17,14 +16,27 @@ export class BcrpError extends Error {
   }
 }
 
+// Reglas de la guía oficial "API para Desarrolladores" de BCRPData:
+// - de 1 a 10 códigos separados por guion; deben ser de la misma frecuencia (si no, solo se muestran los de la primera);
+// - periodo inicial y final opcionales: sin periodos se devuelven los datos más recientes; con uno solo, es una consulta de esa fecha;
+// - el idioma (esp/ing) va después de los dos periodos.
+// - No requiere clave ni suscripción.
+export const MAX_SERIES = 10;
+const DATE = /^\d{4}(-\d{1,2}){0,2}$/; // AAAA, AAAA-M o AAAA-M-D: evita inyectar rutas o parámetros
+
 export function buildUrl(codes, from, to, lang = "esp") {
   if (!Array.isArray(codes) || codes.length === 0) throw new BcrpError("Falta al menos un código de serie");
+  if (codes.length > MAX_SERIES) throw new BcrpError(`El BCRP admite como máximo ${MAX_SERIES} series por consulta`);
   for (const c of codes) if (!/^[A-Za-z0-9]+$/.test(c)) throw new BcrpError(`Código de serie inválido: ${c}`);
-  // Solo se aceptan fechas AAAA, AAAA-M o AAAA-M-D: evita inyectar rutas o parámetros en la URL.
-  const DATE = /^\d{4}(-\d{1,2}){0,2}$/;
-  if (!DATE.test(String(from)) || !DATE.test(String(to))) throw new BcrpError("Fechas inválidas: usa AAAA-M (ej. 2024-1, 2025-6)");
+  if (to && !from) throw new BcrpError("Si indicas periodo final, indica también el inicial");
+  for (const d of [from, to]) if (d && !DATE.test(String(d))) throw new BcrpError("Fechas inválidas: usa AAAA-M (ej. 2024-1, 2025-6)");
   if (!["esp", "ing"].includes(lang)) throw new BcrpError("Idioma no válido: usa esp o ing");
-  return `${BASE_URL}/${codes.join("-")}/json/${from}/${to}/${lang}`;
+  if (lang !== "esp" && !(from && to)) throw new BcrpError("El idioma solo puede cambiarse indicando periodo inicial y final");
+  const parts = [BASE_URL, codes.join("-"), "json"];
+  if (from) parts.push(from);
+  if (to) parts.push(to);
+  if (from && to) parts.push(lang);
+  return parts.join("/");
 }
 
 export function parseResponse(raw, { url, retrievedAt } = {}) {

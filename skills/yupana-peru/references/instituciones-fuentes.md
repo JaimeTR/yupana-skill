@@ -4,7 +4,7 @@
 
 | Institución | Qué publica (alto nivel) | Acceso a revisar |
 |---|---|---|
-| **BCRP** (Banco Central de Reserva del Perú) | Series macro (BCRPData), Nota Semanal, Reporte de Inflación (trimestral), Informe de Estabilidad Financiera, programa monetario, tipo de cambio, tasas, reservas | BCRPData tiene API pública documentada (guía oficial para desarrolladores) |
+| **BCRP** (Banco Central de Reserva del Perú) | Series macro (BCRPData), Nota Semanal, Reporte de Inflación (trimestral), Informe de Estabilidad Financiera, programa monetario, tipo de cambio, tasas, reservas | **BCRPData: API pública y gratuita, sin clave ni suscripción** (GET/POST; salidas JSON, CSV, XML, XLS, TXT; hasta 10 series por consulta, misma frecuencia). Ver Condiciones de Uso en el portal |
 | **INEI** | IPC, PBI mensual y trimestral, encuestas de hogares (ENAHO, ENDES), censos, pobreza, empleo (microdatos) | Portal de microdatos y reportes técnicos; la existencia de API pública debe confirmarse |
 | **MEF** | Marco Macroeconómico Multianual, ejecución presupuestal (Consulta Amigable / SIAF), Transparencia Económica | Portales de transparencia y datos abiertos |
 | **SUNAT** | Recaudación tributaria, comercio exterior (aduanas) | Estadísticas en su portal |

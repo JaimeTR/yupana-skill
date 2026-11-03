@@ -1,22 +1,24 @@
 #!/usr/bin/env node
-// Uso: node scripts/bcrp.mjs get <CÓDIGO[,CÓDIGO...]> <desde> <hasta> [--calc prev|yoy|ytd|ma:N]
-// Ejemplo: node scripts/bcrp.mjs get CODIGO 2024-1 2025-6 --calc yoy
+// Uso: node scripts/bcrp.mjs get <CÓDIGO[,CÓDIGO...]> [desde [hasta]] [--calc prev|yoy|ytd|ma:N]
+// Ejemplo: node scripts/bcrp.mjs get PN01288PM,PN01289PM 2013-1 2016-9 --calc yoy
 // Salida: JSON por stdout con series, cálculo opcional y la cita (fuente, URL, fecha de consulta).
 import { fetchSeries, BcrpError } from "./lib/bcrp-client.mjs";
 import { varPrevia, varInteranual, varAcumuladaAnio, mediaMovil } from "./lib/calc.mjs";
 
-const USO = `Uso: bcrp.mjs get <códigos separados por coma> <desde> <hasta> [--calc prev|yoy|ytd|ma:N]
-Fechas: AAAA-M (ej. 2024-1). Los códigos salen de https://estadisticas.bcrp.gob.pe/estadisticas/series/`;
+const USO = `Uso: bcrp.mjs get <códigos separados por coma (máx. 10, misma frecuencia)> [desde [hasta]] [--calc prev|yoy|ytd|ma:N]
+Fechas: AAAA-M (ej. 2024-1). Sin fechas: datos más recientes. Los códigos salen de https://estadisticas.bcrp.gob.pe/estadisticas/series/`;
 
 export function parseArgs(argv) {
-  const [cmd, codes, from, to, ...rest] = argv;
-  if (cmd !== "get" || !codes || !from || !to) throw new Error(USO);
+  const i = argv.indexOf("--calc");
   let calc = null;
-  const i = rest.indexOf("--calc");
+  let pos = argv;
   if (i !== -1) {
-    calc = rest[i + 1];
+    calc = argv[i + 1];
     if (!calc || !/^(prev|yoy|ytd|ma:\d+)$/.test(calc)) throw new Error("--calc debe ser prev, yoy, ytd o ma:N");
+    pos = [...argv.slice(0, i), ...argv.slice(i + 2)];
   }
+  const [cmd, codes, from, to, extra] = pos;
+  if (cmd !== "get" || !codes || extra !== undefined) throw new Error(USO);
   return { codes: codes.split(",").map((c) => c.trim()).filter(Boolean), from, to, calc };
 }
 
