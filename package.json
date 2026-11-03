@@ -1,0 +1,13 @@
+{
+  "name": "yupana-skill",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Skill gratuito para consultar datos económicos del Perú con cada cifra citada",
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test tests/unit/*.test.mjs",
+    "test:live": "BCRP_LIVE=1 node --test tests/live/*.test.mjs"
+  }
+}
